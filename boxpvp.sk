@@ -1,0 +1,53 @@
+options:
+    prefix: &8[&bBoxPvP&8]
+    perm: boxpvp.admin
+
+on join:
+    set join message to "{@prefix} &e%player% &7sunucuya katıldı, savaşa hazır ol!"
+    
+command /duyuru [<text>]:
+    permission: {@perm}
+    trigger:
+        if arg 1 is not set:
+            send "{@prefix} &7Kullanım: &c/duyuru <mesaj>" to player
+            stop
+        broadcast ""
+        broadcast "{@prefix} &e&lDUYURU"
+        broadcast "&f%arg 1%"
+        broadcast ""
+        play sound "entity.experience_orb.pickup" to all players
+
+command /yardım:
+    alias: /help
+    trigger:
+        send "&8&m---&r &bBoxPvP Yardım &8&m---"
+        send "&b/kit &7- Başlangıç kitini al."
+        send "&b/hız &7- Kısa süreliğine hız kazandırır."
+        send "&b/duyuru &7- (Admin) Duyuru geç."
+        send "&8&m-------------------------"
+
+command /hız:
+    cooldown: 60 seconds
+    cooldown message: &cBu komutu tekrar kullanmak için %remaining time% beklemelisin.
+    trigger:
+        apply speed 2 to player for 10 seconds
+        send "{@prefix} &aHız efekti aktif edildi!" to player
+
+command /kit:
+    trigger:
+        give diamond sword of sharpness 2 to player
+        give 16 golden apple to player
+        give iron armor set to player
+        send "{@prefix} &7Ekipmanların teslim edildi!" to player
+
+on death of player:
+    set death message to "{@prefix} &7%victim% &eavlandı! Katil: &7%attacker%"
+    clear drops
+    drop 1 diamond at victim's location
+    
+command /sohbettemizle:
+    permission: {@perm}
+    trigger:
+        loop 100 times:
+            broadcast ""
+        broadcast "{@prefix} &7Sohbet temizlendi!"
